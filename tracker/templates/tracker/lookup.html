@@ -1,0 +1,12 @@
+<!doctype html>
+<title>gonext</title>
+<h1>gonext v2</h1>
+<form method="get">
+  <input name="nickname" placeholder="FACEIT nickname" value="{{ nickname }}">
+  <button>Look up</button>
+</form>
+{% if error %}<p style="color:red">{{ error }}</p>{% endif %}
+{% if player_json %}
+  <h2>Player</h2><pre>{{ player_json }}</pre>
+  <h2>Last {{ nickname }}'s matches</h2><pre>{{ stats_json }}</pre>
+{% endif %}
