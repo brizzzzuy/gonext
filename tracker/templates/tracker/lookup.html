@@ -1,12 +1,69 @@
 <!doctype html>
+<html>
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width, initial-scale=1">
 <title>gonext</title>
-<h1>gonext v2</h1>
+<style>
+  body { background:#0f1115; color:#e8eaed; font-family:system-ui,sans-serif;
+         max-width:640px; margin:40px auto; padding:0 16px; }
+  form { display:flex; gap:8px; margin-bottom:24px; }
+  input { flex:1; padding:10px 14px; border-radius:8px; border:1px solid #2a2f3a;
+          background:#181b22; color:#e8eaed; font-size:16px; }
+  button { padding:10px 18px; border-radius:8px; border:0; background:#ff5500;
+           color:#fff; font-weight:600; cursor:pointer; }
+  .card { background:#181b22; border:1px solid #2a2f3a; border-radius:12px;
+          padding:16px 20px; margin-bottom:16px; }
+  .profile { display:flex; align-items:center; gap:14px; }
+  .profile img { width:56px; height:56px; border-radius:50%; }
+  .sub { color:#9aa3b2; font-size:14px; }
+  .verdict { font-size:42px; font-weight:800; margin:2px 0 8px; }
+  .QUEUE { color:#3ddc84; } .RISKY { color:#ffb020; }
+  .STOP { color:#ff4d4d; } .BANKIT { color:#ffd447; }
+  .session { font-family:monospace; font-size:20px; letter-spacing:4px; }
+  .W { color:#3ddc84; } .L { color:#ff4d4d; }
+  ul { margin:12px 0 0; padding-left:20px; }
+  li { margin:4px 0; }
+  .error { color:#ff4d4d; }
+</style>
+</head>
+<body>
+<h1>gonext</h1>
 <form method="get">
   <input name="nickname" placeholder="FACEIT nickname" value="{{ nickname }}">
   <button>Look up</button>
 </form>
-{% if error %}<p style="color:red">{{ error }}</p>{% endif %}
-{% if player_json %}
-  <h2>Player</h2><pre>{{ player_json }}</pre>
-  <h2>Last {{ nickname }}'s matches</h2><pre>{{ stats_json }}</pre>
+
+{% if error %}<p class="error">{{ error }}</p>{% endif %}
+
+{% if player and not error %}
+<div class="card profile">
+  {% if player.avatar %}<img src="{{ player.avatar }}" alt="">{% endif %}
+  <div>
+    <strong>{{ player.nickname }}</strong> · {{ player.country }}<br>
+    <span class="sub">
+      {% if player.level %}Level {{ player.level }} · {{ player.elo }} elo
+      {% else %}no CS2 profile{% endif %}
+    </span>
+  </div>
+</div>
 {% endif %}
+
+{% if verdict %}
+<div class="card">
+  <div class="verdict {{ verdict.verdict|cut:" " }}">{{ verdict.verdict }}</div>
+  {% if verdict.score is not None %}
+    <div class="sub">queue score: {{ verdict.score }}/100</div>
+  {% endif %}
+  {% if session_str %}
+    <div class="session">
+      {% for c in session_str %}<span class="{{ c }}">{{ c }}</span>{% endfor %}
+    </div>
+  {% endif %}
+  <ul>
+    {% for r in verdict.reasons %}<li>{{ r }}</li>{% endfor %}
+  </ul>
+</div>
+{% endif %}
+</body>
+</html>

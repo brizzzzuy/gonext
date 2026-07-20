@@ -17,10 +17,12 @@ def baseline_from(history, n=10):
 
 def decide(session, baseline, history, now):
     if session:
-        if len(session) >= and not session[0]["won"] and not session[1]["won"]:
+        if len(session) >= 2 and not session[0]["won"] and not session[1]["won"]:
             return {"verdict": "STOP", "score": None, "reasons": [
+                "2 losses in a row — this is the tilt zone, the next queue rarely saves it"]}
+        if len(session) >= 3 and session[0]["won"]:
+            return {"verdict": "BANK IT", "score": None, "reasons": [
                 f"{len(session)} matches deep and the last one was a win — log off on top"]}
-            
     score = 100
     reasons = []
     
@@ -36,7 +38,7 @@ def decide(session, baseline, history, now):
             reasons.append("Won the last match (+10)")
             
         if baseline and baseline["kd"]:
-            ratio = (sum(m["kd"] for m in session / len(session)) / baseline["kd"])
+            ratio = (sum(m["kd"] for m in session) / len(session)) / baseline["kd"]
             if ratio < 0.8:
                 score -= 20
                 reasons.append(f"Session K/D  at {ratio:.0%} of ypur usual - way off form (-20)")
@@ -72,9 +74,9 @@ def decide(session, baseline, history, now):
         reasons.append(f"Its deep night in Tashkent (-10)")
     
     
-    verdict = "QUEUE" if score  >= 70 else "RISKY" if score >= 40 else "STOOOOP!!!!"
+    verdict = "QUEUE" if score  >= 70 else "RISKY" if score >= 40 else "STOP"
     if not reasons:
-        reasons.appemd("Fresh queue, annihilate them!")
+        reasons.append("Fresh queue, annihilate them!")
     return {"verdict": verdict, "score": score, "reasons": reasons}
                     
                             
