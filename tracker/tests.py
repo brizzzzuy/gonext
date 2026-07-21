@@ -5,6 +5,7 @@ from django.test import SimpleTestCase
 
 from tracker.decider import baseline_from, decide
 from tracker.sessions import group_sessions
+from tracker.stats import backtest, compute_stats
 
 
 def fake(hours, result="1", kd="1.0", adr="80"):
@@ -89,3 +90,14 @@ class DeciderTests(SimpleTestCase):
     def test_baseline_needs_ten(self):
         self.assertIsNone(baseline_from([nm(1)] * 9))
         self.assertIsNotNone(baseline_from([nm(1)] * 10))
+        
+    
+class StatsTests(SimpleTestCase):
+    def test_backtest_counts_tilt_spirals(self):
+        hist = [nm(i, won=False) for i in range(5, 0, -1)]
+        self.assertEqual(backtest(hist)["stop_signals"], 3)
+    def test_backtest_no_signal_all_wins(self):
+        self. assertEqual(backtest([nm(3), nm(2), nm(1)])["stop_signals"], 0)
+    def test_compute_empty(self):
+        self.assertIsNone(compute_stats([]))
+        

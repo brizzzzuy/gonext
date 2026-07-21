@@ -4,11 +4,21 @@ GAP_SECONDS = 2  * 60 * 60
 def normalize(match):
     s = match["stats"]
     adr = s.get("ADR")
+    
+    def num(key, default=0.0):
+        try:
+            return float(s.get(key))
+        except (TypeError, ValueError):
+            return default
     return {
         "ts": s["Match Finished At"] / 1000, #ms to seconds btw
         "won": s.get("Result") == "1",
         "kd": float(s["K/D Ratio"]),
+        "kr": num("K/R ratio"),
         "adr": float(adr) if adr is not None else None,
+        "hs": num("Headshot %"),
+        "kills": num("Kills"),
+        "deaths": num("Deaths"),
         "map": s.get("Map", "")
     }
     
