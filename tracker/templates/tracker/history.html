@@ -1,0 +1,54 @@
+<!doctype html>
+<html>
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width, initial-scale=1">
+<title>gonext · history</title>
+<style>
+  body { background:#0f1115; color:#e8eaed; font-family:system-ui,sans-serif;
+         max-width:680px; margin:40px auto; padding:0 16px; }
+  form { display:flex; gap:8px; margin-bottom:24px; }
+  input { flex:1; padding:10px 14px; border-radius:8px; border:1px solid #2a2f3a;
+          background:#181b22; color:#e8eaed; font-size:16px; }
+  button { padding:10px 18px; border-radius:8px; border:0; background:#ff5500;
+           color:#fff; font-weight:600; cursor:pointer; }
+  .sess { background:#181b22; border:1px solid #2a2f3a; border-radius:10px;
+          padding:12px 16px; margin-bottom:10px; display:flex;
+          align-items:center; justify-content:space-between; gap:12px; }
+  .wl { font-family:monospace; font-size:18px; letter-spacing:3px; }
+  .W { color:#3ddc84; } .L { color:#ff4d4d; }
+  .meta { color:#9aa3b2; font-size:13px; }
+  .kd { font-weight:700; }
+  a { color:#ff8040; }
+  .error { color:#ff4d4d; }
+</style>
+</head>
+<body>
+<h1>gonext · history</h1>
+<form method="get">
+  <input name="nickname" placeholder="FACEIT nickname" value="{{ nickname }}">
+  <button>Load</button>
+</form>
+
+{% if error %}<p class="error">{{ error }}</p>{% endif %}
+
+{% for r in rows %}
+<div class="sess">
+  <div>
+    <div class="wl">
+      {% for c in r.wl %}<span class="{{ c }}">{{ c }}</span>{% endfor %}
+    </div>
+    <div class="meta">{{ r.date }} · {{ r.n }} maps · {{ r.wins }}W-{{ r.losses }}L</div>
+  </div>
+  <div class="kd">{{ r.kd|floatformat:2 }} KD</div>
+</div>
+{% endfor %}
+
+{% if rows %}
+<p style="margin-top:16px">
+  <a href="/?nickname={{ nickname }}">→ verdict</a> ·
+  <a href="/stats/?nickname={{ nickname }}">→ stats</a>
+</p>
+{% endif %}
+</body>
+</html>
