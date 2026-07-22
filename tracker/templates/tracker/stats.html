@@ -67,6 +67,29 @@
   </p>
 </div>
 
+{% if stats.tod.day_n and stats.tod.night_n %}
+<div class="card">
+  <table>
+    <tr><th></th><th>Before 18:00</th><th>After 18:00</th></tr>
+    <tr>
+      <td>Win rate</td>
+      <td>{{ stats.tod.day_wr|floatformat:0 }}%</td>
+      <td>{{ stats.tod.night_wr|floatformat:0 }}%</td>
+    </tr>
+    <tr>
+      <td>Matches</td>
+      <td>{{ stats.tod.day_n }}</td>
+      <td>{{ stats.tod.night_n }}</td>
+    </tr>
+  </table>
+  <p class="sub" style="margin-top:12px">
+    When you actually perform. If night is worse, that's the decider's
+    late-night penalty earning its keep.
+  </p>
+</div>
+{% endif %}
+
+
 <p><a href="/?nickname={{ nickname }}">→ get the queue verdict</a></p>
 {% endif %}
 </body>

@@ -1,3 +1,9 @@
+from datetime import datetime
+from zoneinfo import ZoneInfo
+
+TASHKENT = ZoneInfo("Asia/Tashkent")
+
+
 def _avg(vals):
     vals = [v for v in vals if v is not None]
     return sum(vals)  / len(vals) if vals else None
@@ -26,6 +32,7 @@ def compute_stats(history):
         "wins": wins,
         "losses": len(history) - wins,
         "backtest": backtest(history),
+        "tod": time_of_day(history),
     }
 
 def backtest(history):
@@ -34,4 +41,21 @@ def backtest(history):
         1 for i in range (2, len(chrono))
         if not chrono[i - 1]["won"] and not chrono[i - 2]["won"]
     )
-    return {"stop_signals" : stops}
+    return {"stop_signals" : stops}\
+        
+        
+def time_of_day(history):
+    day = [
+        m for m in history
+        if datetime.fromtimestamp(m["ts"], TASHKENT).hour < 18
+    ]
+    night = [
+         m for m in history
+        if datetime.fromtimestamp(m["ts"], TASHKENT).hour >= 18
+    ]
+    def wr(ms):
+        return sum(1 for m in ms if m["won"]) / len(ms) * 100 if ms else None
+    return {
+        "day_wr": wr(day), "day_n": len(day),
+        "night_wr": wr(night), "night_n": len(night),
+    }

@@ -1,5 +1,6 @@
 from datetime import datetime
 from zoneinfo import ZoneInfo
+from tracker.stats import time_of_day
 
 from django.test import SimpleTestCase
 
@@ -101,3 +102,18 @@ class StatsTests(SimpleTestCase):
     def test_compute_empty(self):
         self.assertIsNone(compute_stats([]))
         
+
+
+
+
+
+class TimeOfDayTests(SimpleTestCase):
+    def test_splits_day_night(self):
+
+        r = time_of_day([nm(8, won=True), nm(15, won=False)])
+        self.assertEqual(r["day_n"], 1)
+        self.assertEqual(r["night_n"], 1)
+
+    def test_empty_side_is_none(self):
+        r = time_of_day([nm(8, won=True)])
+        self.assertIsNone(r["night_wr"])
