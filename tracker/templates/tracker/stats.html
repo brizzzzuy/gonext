@@ -1,0 +1,73 @@
+<!doctype html>
+<html>
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width, initial-scale=1">
+<title>gonext · stats</title>
+<style>
+  body { background:#0f1115; color:#e8eaed; font-family:system-ui,sans-serif;
+         max-width:680px; margin:40px auto; padding:0 16px; }
+  form { display:flex; gap:8px; margin-bottom:24px; }
+  input { flex:1; padding:10px 14px; border-radius:8px; border:1px solid #2a2f3a;
+          background:#181b22; color:#e8eaed; font-size:16px; }
+  button { padding:10px 18px; border-radius:8px; border:0; background:#ff5500;
+           color:#fff; font-weight:600; cursor:pointer; }
+  .card { background:#181b22; border:1px solid #2a2f3a; border-radius:12px;
+          padding:16px 20px; margin-bottom:16px; }
+  .hero { text-align:center; }
+  .hero .big { font-size:44px; font-weight:800; color:#ff8040; line-height:1.1; }
+  .hero .sub { color:#9aa3b2; font-size:14px; }
+  .record { font-size:20px; }
+  .win { color:#3ddc84; } .loss { color:#ff4d4d; }
+  table { width:100%; border-collapse:collapse; }
+  th, td { text-align:right; padding:8px 6px; border-bottom:1px solid #232833; }
+  th:first-child, td:first-child { text-align:left; color:#9aa3b2; }
+  .better { color:#3ddc84; } .worse { color:#ff4d4d; }
+  a { color:#ff8040; }
+  .error { color:#ff4d4d; }
+</style>
+</head>
+<body>
+<h1>gonext · stats</h1>
+<form method="get">
+  <input name="nickname" placeholder="FACEIT nickname" value="{{ nickname }}">
+  <button>Analyze</button>
+</form>
+
+{% if error %}<p class="error">{{ error }}</p>{% endif %}
+
+{% if stats %}
+<div class="card hero">
+  <div class="big">{{ stats.backtest.stop_signals }}</div>
+  <div class="sub">
+    tilt spirals the 2-loss STOP rule would have caught
+    across {{ stats.total }} matches
+  </div>
+</div>
+
+<div class="card hero">
+  <div class="record">
+    <span class="win">{{ stats.wins }}W</span> –
+    <span class="loss">{{ stats.losses }}L</span>
+  </div>
+  <div class="sub">{{ stats.lifetime.wr|floatformat:0 }}% win rate over {{ stats.total }}</div>
+</div>
+
+<div class="card">
+  <table>
+    <tr><th></th><th>Last 10</th><th>Lifetime</th></tr>
+    <tr><td>Win rate</td><td>{{ stats.baseline.wr|floatformat:0 }}%</td><td>{{ stats.lifetime.wr|floatformat:0 }}%</td></tr>
+    <tr><td>K/D</td><td>{{ stats.baseline.kd|floatformat:2 }}</td><td>{{ stats.lifetime.kd|floatformat:2 }}</td></tr>
+    <tr><td>ADR</td><td>{{ stats.baseline.adr|floatformat:0 }}</td><td>{{ stats.lifetime.adr|floatformat:0 }}</td></tr>
+    <tr><td>HS %</td><td>{{ stats.baseline.hs|floatformat:0 }}%</td><td>{{ stats.lifetime.hs|floatformat:0 }}%</td></tr>
+    <tr><td>K/R</td><td>{{ stats.baseline.kr|floatformat:2 }}</td><td>{{ stats.lifetime.kr|floatformat:2 }}</td></tr>
+  </table>
+  <p class="sub" style="margin-top:12px">
+    Last 10 = recent form. Below lifetime means you're trending down.
+  </p>
+</div>
+
+<p><a href="/?nickname={{ nickname }}">→ get the queue verdict</a></p>
+{% endif %}
+</body>
+</html>

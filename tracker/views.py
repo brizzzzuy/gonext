@@ -41,8 +41,28 @@ def lookup(request):
                     ctx["session_str"] = "".join(
                         "W" if m["won"] else "L" for m in reversed(active)
                     )
-    return render(request, "tracker/lookup.html", ctx)       
-            
+    return render(request, "tracker/lookup.html", ctx)      
+
+
+def stats(request):
+    ctx = {}
+    nickname = request.GET.get("nickname", "").strip()
+    if nickname:
+        ctx["nickname"] = nickname
+        player = faceit.get_player(nickname)       
+        if player is None:
+            ctx["error"] = f"'{nickname}' not found or API error occured"
+        else:
+            raw = faceit.get_player_stats(player["player_id"])  
+            if not raw:
+                ctx["error"] = "No CS2 match history" 
+            else:
+                from .stats import compute_stats
+                history = sorted(
+                    (normalize(m) for m in raw), key=lambda m: -m["ts"]
+                )      
+                ctx["stats"] = compute_stats(history)
+    return render(request, "tracker/stats.html", ctx)            
             
             
     

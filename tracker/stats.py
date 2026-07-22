@@ -16,15 +16,15 @@ def compute_stats(history):
             "adr": _avg([m["adr"] for m in matches]),
             "hs": _avg([m["hs"] for m in matches]),
             "kr": _avg([m["kr"] for m in matches]),
-            "wr": sim(1 for m in matches if m["won"]) / len(matches) * 100,        
+            "wr": sum(1 for m in matches if m["won"]) / len(matches) * 100,        
         }
     
     return {
         "lifetime": block(history),
         "baseline": block(history[:10]),
-        "toatal": len(history),
+        "total": len(history),
         "wins": wins,
-        "loses": len(history) - wins,
+        "losses": len(history) - wins,
         "backtest": backtest(history),
     }
 

@@ -14,9 +14,9 @@ def normalize(match):
         "ts": s["Match Finished At"] / 1000, #ms to seconds btw
         "won": s.get("Result") == "1",
         "kd": float(s["K/D Ratio"]),
-        "kr": num("K/R ratio"),
+        "kr": num("K/R Ratio"),
         "adr": float(adr) if adr is not None else None,
-        "hs": num("Headshot %"),
+        "hs": num("Headshots %"),
         "kills": num("Kills"),
         "deaths": num("Deaths"),
         "map": s.get("Map", "")
