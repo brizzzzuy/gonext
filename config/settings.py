@@ -20,7 +20,7 @@ SECRET_KEY = os.getenv("SECRET_KEY")
 DEBUG = os.getenv("DEBUG", "False") == "True"
 
 
-ALLOWED_HOSTS = ['your-app-name.onrender.com', 'localhost', '127.0.0.1']
+ALLOWED_HOSTS = ['gonext.brizzy.hackclub.app', 'localhost', '127.0.0.1']
 
 
 
