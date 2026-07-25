@@ -1,39 +1,12 @@
-<!doctype html>
-<html>
-<head>
-<meta charset="utf-8">
-<meta name="viewport" content="width=device-width, initial-scale=1">
-<title>gonext · stats</title>
-<style>
-  body { background:#0f1115; color:#e8eaed; font-family:system-ui,sans-serif;
-         max-width:680px; margin:40px auto; padding:0 16px; }
-  form { display:flex; gap:8px; margin-bottom:24px; }
-  input { flex:1; padding:10px 14px; border-radius:8px; border:1px solid #2a2f3a;
-          background:#181b22; color:#e8eaed; font-size:16px; }
-  button { padding:10px 18px; border-radius:8px; border:0; background:#ff5500;
-           color:#fff; font-weight:600; cursor:pointer; }
-  .card { background:#181b22; border:1px solid #2a2f3a; border-radius:12px;
-          padding:16px 20px; margin-bottom:16px; }
-  .hero { text-align:center; }
-  .hero .big { font-size:44px; font-weight:800; color:#ff8040; line-height:1.1; }
-  .hero .sub { color:#9aa3b2; font-size:14px; }
-  .record { font-size:20px; }
-  .win { color:#3ddc84; } .loss { color:#ff4d4d; }
-  table { width:100%; border-collapse:collapse; }
-  th, td { text-align:right; padding:8px 6px; border-bottom:1px solid #232833; }
-  th:first-child, td:first-child { text-align:left; color:#9aa3b2; }
-  .better { color:#3ddc84; } .worse { color:#ff4d4d; }
-  a { color:#ff8040; }
-  .error { color:#ff4d4d; }
-</style>
-</head>
-<body>
-<h1>gonext · stats</h1>
+
+{% extends "tracker/base.html" %}
+{% block title %}gonext · stats{% endblock %}
+{% block nav_stats %}active{% endblock %}
+{% block content %}
 <form method="get">
   <input name="nickname" placeholder="FACEIT nickname" value="{{ nickname }}">
   <button>Analyze</button>
 </form>
-
 {% if error %}<p class="error">{{ error }}</p>{% endif %}
 
 {% if stats %}
@@ -106,9 +79,5 @@
 </div>
 {% endif %}
 
-
-
-<p><a href="/?nickname={{ nickname }}">→ get the queue verdict</a></p>
 {% endif %}
-</body>
-</html>
+{% endblock %}

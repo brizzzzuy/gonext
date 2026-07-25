@@ -33,7 +33,7 @@ def compute_stats(history):
         "losses": len(history) - wins,
         "backtest": backtest(history),
         "tod": time_of_day(history),
-        "maps": map_perfomance(history)
+        "maps": map_performance(history)
     }
 
 def backtest(history):
