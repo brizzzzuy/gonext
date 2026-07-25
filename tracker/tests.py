@@ -7,6 +7,8 @@ from django.test import SimpleTestCase
 from tracker.decider import baseline_from, decide
 from tracker.sessions import group_sessions
 from tracker.stats import backtest, compute_stats
+from tracker.stats import map_performance
+
 
 
 def fake(hours, result="1", kd="1.0", adr="80"):
@@ -117,3 +119,21 @@ class TimeOfDayTests(SimpleTestCase):
     def test_empty_side_is_none(self):
         r = time_of_day([nm(8, won=True)])
         self.assertIsNone(r["night_wr"])
+        
+        
+        
+        
+        
+
+
+class MapTests(SimpleTestCase):
+    def test_groups_and_filters(self):
+        hist = [
+            {"map": "de_mirage", "won": True, "kd": 1.2},
+            {"map": "de_mirage", "won": False, "kd": 0.8},
+            {"map": "de_nuke", "won": True, "kd": 1.0},  # only 1, filtered
+        ]
+        rows = map_performance(hist)
+        self.assertEqual(len(rows), 1)
+        self.assertEqual(rows[0]["map"], "Mirage")
+        self.assertEqual(rows[0]["wr"], 50.0)

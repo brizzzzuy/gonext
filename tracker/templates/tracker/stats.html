@@ -89,6 +89,24 @@
 </div>
 {% endif %}
 
+{% if stats.maps %}
+<div class="card">
+  <table>
+    <tr><th>Map</th><th>Played</th><th>Win %</th><th>K/D</th></tr>
+    {% for m in stats.maps %}
+    <tr>
+      <td>{{ m.map }}</td>
+      <td>{{ m.n }}</td>
+      <td>{{ m.wr|floatformat:0 }}%</td>
+      <td>{{ m.kd|floatformat:2 }}</td>
+    </tr>
+    {% endfor %}
+  </table>
+  <p class="sub" style="margin-top:12px">Your maps, most-played first. Low win% = consider banning it.</p>
+</div>
+{% endif %}
+
+
 
 <p><a href="/?nickname={{ nickname }}">→ get the queue verdict</a></p>
 {% endif %}

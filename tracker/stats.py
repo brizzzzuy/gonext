@@ -33,6 +33,7 @@ def compute_stats(history):
         "losses": len(history) - wins,
         "backtest": backtest(history),
         "tod": time_of_day(history),
+        "maps": map_perfomance(history)
     }
 
 def backtest(history):
@@ -59,3 +60,20 @@ def time_of_day(history):
         "day_wr": wr(day), "day_n": len(day),
         "night_wr": wr(night), "night_n": len(night),
     }
+    
+def map_performance(history):
+    maps={}
+    for m in history:
+        name = m["map"] or "Unknown"
+        maps.setdefault(name, []).append(m)
+    rows = []
+    for name, ms in maps.items():
+        if len(ms) < 2:
+            continue
+        rows.append({
+            "map": name.split("_")[-1].title(),
+            "n": len(ms),
+            "wr": sum(1 for x in ms if x["won"]) / len(ms) * 100,
+            "kd":  sum(x["kd"] for x in ms) / len(ms),
+        })
+    return sorted(rows, key=lambda r: -r["n"])
