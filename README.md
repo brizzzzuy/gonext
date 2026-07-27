@@ -1,5 +1,7 @@
 # gonext
 
+![gonext 2026-07-27 17-37-49.mp4](screenshots/2026-07-27 17-37-49.mp4)
+
 **gonext analyzes YOU - not the opponents.**
 
 Most FACEIT tools scout the enemy team. gonext looks at your own recent matches and tells you one thing; should you queue again, or stop before you tilt away your elo?
