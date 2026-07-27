@@ -1,6 +1,6 @@
 # gonext
 
-![gonext 2026-07-27 17-37-49.mp4](screenshots/2026-07-27 17-37-49.mp4)
+![gonext video](screenshots/video.gif)
 
 **gonext analyzes YOU - not the opponents.**
 
